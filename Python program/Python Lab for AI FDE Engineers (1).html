@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python Lab for AI FDE Engineers</title>
+<style>
+:root{--bg:#0a0f22;--pn:#101936;--tx:#e8ebff;--mu:#8d97c0;--ac:#9ec5ff;--bl:#8ec5ff;--bd:#1e2a57;--cb:transparent;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0f22;--pn:#101936;--tx:#e8ebff;--mu:#8d97c0;--ac:#9ec5ff;--bl:#8ec5ff;--bd:#1e2a57;--cb:transparent}}
+:root[data-theme="light"]{--bg:#eef2fb;--pn:#fff;--tx:#0b1020;--mu:#55618a;--ac:#2563eb;--bl:#1d4ed8;--bd:#d0d9f0;--cb:#f3f6fd}
+:root[data-theme="dark"]{--bg:#0a0f22;--pn:#101936;--tx:#e8ebff;--mu:#8d97c0;--ac:#9ec5ff;--bl:#8ec5ff;--bd:#1e2a57;--cb:transparent}
+*{box-sizing:border-box}html{scroll-padding-top:90px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+aside{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;width:250px;padding:18px 14px;overflow:auto;border-right:1px solid var(--bd);background:var(--pn)}
+aside h1{font-size:18px;margin:0 0 4px}aside small{color:var(--mu)}
+aside a{display:flex;justify-content:space-between;gap:6px;padding:7px 10px;margin-top:2px;border-radius:8px;color:var(--tx);text-decoration:none;font-size:14px}
+aside a:hover,aside a.on{background:var(--bd)}aside a b{color:var(--bl);margin-right:6px}aside a i{font-style:normal;color:var(--mu);font-size:12px}
+main{margin-left:250px;padding:0 22px 40px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:14px 0 10px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.top input{flex:1;min-width:200px;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--pn);color:var(--tx);font-size:15px}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--pn);color:var(--tx);border-radius:10px;padding:9px 14px;font-size:14px}
+button:hover{border-color:var(--ac)}
+.bar{height:6px;background:var(--bd);border-radius:6px;overflow:hidden;flex-basis:100%}.bar div{height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--bl));transition:width .3s}
+.st{color:var(--mu);font-size:13px}
+h2{margin:26px 0 10px;font-size:20px}h2 span{color:var(--bl)}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,430px),1fr));gap:14px}
+.c{background:var(--pn);border:1px solid var(--bd);border-radius:14px;overflow:hidden;min-width:0}
+.c.d{border-color:var(--ac)}
+.h{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--bd)}
+.h b{color:var(--mu);font-weight:600}.h strong{flex:1}
+.h button{padding:5px 10px;font-size:13px}.h .cp{background:#18244f;color:#e8ebff;border-color:#2b3a72}:root[data-theme="light"] .h .cp{background:#e6ecff;color:#0b1020;border-color:var(--bd)}.h .dn{color:var(--ac)}
+pre{margin:0;padding:14px;background:var(--cb);color:var(--tx);overflow-x:auto;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;tab-size:4}
+.none{padding:40px;text-align:center;color:var(--mu)}
+@media(max-width:820px){aside{position:static;width:auto;border:0;border-bottom:1px solid var(--bd);display:flex;gap:6px;overflow-x:auto;padding:10px}aside h1,aside small{display:none}aside a{white-space:nowrap}aside a i{display:none}main{margin:0;padding:0 12px 30px}.top{position:static}}
+</style>
+</head>
+<body>
+<aside id="nav"><h1>Python Lab</h1><small>Basics to advanced for AI FDE work</small><div id="links"></div></aside>
+<main>
+<div class="top">
+<input id="q" type="search" placeholder="Search: decorator, regex, rag, async, boto3, pandas...">
+<button id="all">Show all</button><button id="th">Light / Dark</button>
+<span class="st" id="cnt"></span>
+<div class="bar"><div id="pb"></div></div>
+</div>
+<div id="out"></div>
+</main>
+<script>
+const r=String.raw;
+const M=[
+["Python Basics",[
+["Variables and types",r`x = 10
+pi = 3.14
+ok = True
+name = "edge-01"
+print(type(x), type(pi), type(ok), type(name))`],
+["f-strings and formatting",r`host, port = "api.local", 443
+print(f"{host}:{port}")
+print(f"{3.14159:.2f} {1234567:,}")`],
+["Arithmetic operators",r`print(7 // 2, 7 % 2, 2 ** 10, round(7 / 3, 2))`],
+["String methods",r`s = " BGP, OSPF ,ECMP "
+print(s.strip().lower().split(","))
+print("-".join(["a", "b", "c"]))`],
+["Unpacking and swap",r`a, b = 1, 2
+a, b = b, a
+first, *rest = [1, 2, 3, 4]
+print(a, b, first, rest)`]]],
+["Conditional Statements",[
+["Grade calculator",r`marks = 82
+if marks >= 90: grade = "A"
+elif marks >= 75: grade = "B"
+elif marks >= 50: grade = "C"
+else: grade = "Fail"
+print(grade)`],
+["Leap year",r`year = 2028
+if year % 400 == 0 or (year % 4 == 0 and year % 100 != 0):
+    print("Leap year")
+else:
+    print("Not leap")`],
+["match statement",r`code = 404
+match code:
+    case 200: print("OK")
+    case 404 | 410: print("Gone")
+    case _: print("Other")`],
+["Truthiness",r`for v in [0, "", [], None, "x", [0]]:
+    print(repr(v), bool(v))`]]],
+["Loops",[
+["FizzBuzz",r`for i in range(1, 16):
+    print("FizzBuzz" if i % 15 == 0 else "Fizz" if i % 3 == 0
+          else "Buzz" if i % 5 == 0 else i)`],
+["Prime check",r`def is_prime(n):
+    if n < 2: return False
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0: return False
+    return True
+print([n for n in range(30) if is_prime(n)])`],
+["enumerate and zip",r`hosts = ["r1", "r2"]
+ips = ["10.0.0.1", "10.0.0.2"]
+for i, (h, ip) in enumerate(zip(hosts, ips), 1):
+    print(i, h, ip)`],
+["while with break and else",r`tries = 0
+while tries < 3:
+    tries += 1
+    if tries == 5: break
+else:
+    print("gave up after", tries)`]]],
+["Data Structures",[
+["List operations",r`nums = [5, 2, 9]
+nums.append(1); nums.sort(reverse=True)
+print(nums, nums[1:3], nums[::-1])`],
+["Dictionary and word count",r`from collections import Counter
+text = "bgp ospf bgp ecmp bgp"
+print(Counter(text.split()).most_common(2))`],
+["Set operations",r`a = {"10.0.0.1", "10.0.0.2"}
+b = {"10.0.0.2", "10.0.0.3"}
+print(a & b, a | b, a - b)`],
+["Comprehensions",r`sq = {n: n * n for n in range(5)}
+ev = [n for n in range(10) if n % 2 == 0]
+print(sq, ev)`],
+["Sorting with key",r`devs = [{"n": "r1", "cpu": 80}, {"n": "r2", "cpu": 35}]
+print(sorted(devs, key=lambda d: d["cpu"]))`],
+["namedtuple",r`from collections import namedtuple
+Route = namedtuple("Route", "prefix nexthop")
+r1 = Route("10.0.0.0/8", "192.168.1.1")
+print(r1.prefix, r1.nexthop)`]]],
+["Functions and Lambda",[
+["Defaults and keyword args",r`def connect(host, port=22, *, timeout=5):
+    return f"{host}:{port} t={timeout}"
+print(connect("r1", timeout=10))`],
+["*args and **kwargs",r`def show(*args, **kwargs):
+    print(args, kwargs)
+show(1, 2, vlan=10, name="mgmt")`],
+["map, filter, lambda",r`n = [1, 2, 3, 4]
+print(list(map(lambda x: x * 2, n)))
+print(list(filter(lambda x: x % 2, n)))`],
+["Recursion with cache",r`from functools import lru_cache
+@lru_cache(maxsize=None)
+def fib(n):
+    return n if n < 2 else fib(n - 1) + fib(n - 2)
+print(fib(50))`],
+["Closure",r`def counter():
+    c = 0
+    def inc():
+        nonlocal c
+        c += 1
+        return c
+    return inc
+f = counter(); f(); print(f())`]]],
+["File Handling",[
+["Write and read text",r`with open("notes.txt", "w") as f:
+    f.write("line1\nline2\n")
+with open("notes.txt") as f:
+    for line in f: print(line.strip())`],
+["CSV with DictReader",r`import csv
+with open("devices.csv", newline="") as f:
+    for row in csv.DictReader(f):
+        print(row["host"], row["ip"])`],
+["JSON load and dump",r`import json
+cfg = {"asn": 65001, "peers": ["10.0.0.1"]}
+with open("cfg.json", "w") as f: json.dump(cfg, f, indent=2)
+print(json.load(open("cfg.json"))["asn"])`],
+["pathlib",r`from pathlib import Path
+for p in Path(".").glob("*.py"):
+    print(p.name, p.stat().st_size)`]]],
+["Exception Handling",[
+["try, except, else, finally",r`try:
+    n = int("42x")
+except ValueError as e:
+    print("bad input:", e)
+else:
+    print("ok", n)
+finally:
+    print("always runs")`],
+["Custom exception",r`class DeviceDown(Exception): pass
+def check(up):
+    if not up: raise DeviceDown("r1 unreachable")
+try: check(False)
+except DeviceDown as e: print(e)`],
+["Retry with backoff",r`import time
+def retry(fn, n=3, delay=1):
+    for i in range(n):
+        try: return fn()
+        except Exception as e:
+            if i == n - 1: raise
+            time.sleep(delay * 2 ** i)`]]],
+["Regular Expressions",[
+["Find IP addresses",r`import re
+log = "src 10.1.1.5 dst 192.168.0.9"
+print(re.findall(r"\b\d{1,3}(?:\.\d{1,3}){3}\b", log))`],
+["Named groups",r`import re
+m = re.match(r"(?P<ts>\S+) (?P<lvl>\w+) (?P<msg>.*)", "12:01 ERROR link down")
+print(m.groupdict())`],
+["Validate email and substitute",r`import re
+print(bool(re.fullmatch(r"[\w.+-]+@[\w-]+\.[\w.]+", "a@b.com")))
+print(re.sub(r"\d", "#", "pin 4821"))`]]],
+["OOP",[
+["Class and object",r`class Router:
+    def __init__(self, name): self.name, self.up = name, True
+    def status(self): return f"{self.name} up={self.up}"
+print(Router("r1").status())`],
+["Inheritance and super",r`class Device:
+    def __init__(self, n): self.n = n
+class Firewall(Device):
+    def __init__(self, n, vendor):
+        super().__init__(n); self.vendor = vendor
+print(Firewall("fw1", "PaloAlto").vendor)`],
+["Dunder methods",r`class Vec:
+    def __init__(self, x, y): self.x, self.y = x, y
+    def __add__(self, o): return Vec(self.x + o.x, self.y + o.y)
+    def __repr__(self): return f"Vec({self.x},{self.y})"
+print(Vec(1, 2) + Vec(3, 4))`],
+["dataclass",r`from dataclasses import dataclass, field
+@dataclass
+class Peer:
+    ip: str
+    asn: int = 65000
+    tags: list = field(default_factory=list)
+print(Peer("10.0.0.1"))`],
+["Abstract base class",r`from abc import ABC, abstractmethod
+class Backend(ABC):
+    @abstractmethod
+    def deploy(self): ...
+class AWS(Backend):
+    def deploy(self): return "deployed to AWS"
+print(AWS().deploy())`]]],
+["Modules, Typing, CLI",[
+["Virtual env and pip",r`# run in terminal
+# python -m venv .venv
+# source .venv/bin/activate      (Windows: .venv\Scripts\activate)
+# pip install requests pandas
+# pip freeze > requirements.txt`],
+["Type hints",r`def avg(xs: list[float]) -> float:
+    return sum(xs) / len(xs)
+def find(d: dict[str, int], k: str) -> int | None:
+    return d.get(k)`],
+["main guard and argparse",r`import argparse
+def main():
+    p = argparse.ArgumentParser()
+    p.add_argument("--host", required=True)
+    p.add_argument("-v", action="store_true")
+    print(p.parse_args())
+if __name__ == "__main__":
+    main()`],
+["Environment variables",r`import os
+key = os.getenv("API_KEY")
+if not key:
+    raise SystemExit("Set API_KEY first")`]]],
+["Advanced Python",[
+["Generators",r`def read_chunks(items, n):
+    for i in range(0, len(items), n):
+        yield items[i:i + n]
+print(list(read_chunks(list(range(7)), 3)))`],
+["Decorator (timing)",r`import time, functools
+def timed(fn):
+    @functools.wraps(fn)
+    def w(*a, **k):
+        t = time.perf_counter(); out = fn(*a, **k)
+        print(fn.__name__, round(time.perf_counter() - t, 4), "s"); return out
+    return w
+@timed
+def work(): sum(range(10**6))
+work()`],
+["Context manager",r`from contextlib import contextmanager
+@contextmanager
+def session(name):
+    print("open", name)
+    try: yield name
+    finally: print("close", name)
+with session("db"): print("working")`],
+["itertools and functools",r`from itertools import groupby, islice
+from functools import reduce
+print(reduce(lambda a, b: a * b, [1, 2, 3, 4]))
+print([(k, len(list(g))) for k, g in groupby("aabbbc")])`]]],
+["Concurrency",[
+["asyncio gather",r`import asyncio
+async def ping(h):
+    await asyncio.sleep(1); return f"{h} ok"
+async def main():
+    print(await asyncio.gather(*(ping(h) for h in ["r1", "r2", "r3"])))
+asyncio.run(main())`],
+["ThreadPoolExecutor",r`from concurrent.futures import ThreadPoolExecutor
+def check(h): return h, "up"
+with ThreadPoolExecutor(max_workers=8) as ex:
+    print(list(ex.map(check, ["r1", "r2", "r3"])))`]]],
+["APIs and Cloud",[
+["requests GET with timeout",r`import requests
+r = requests.get("https://api.github.com", timeout=5)
+r.raise_for_status()
+print(r.status_code, list(r.json())[:3])`],
+["FastAPI endpoint",r`# pip install fastapi uvicorn
+from fastapi import FastAPI
+app = FastAPI()
+@app.get("/health")
+def health(): return {"status": "ok"}
+# run: uvicorn app:app --reload`],
+["boto3 list S3 buckets",r`# pip install boto3, then aws configure
+import boto3
+s3 = boto3.client("s3")
+for b in s3.list_buckets()["Buckets"]:
+    print(b["Name"])`],
+["subprocess ping",r`import subprocess
+res = subprocess.run(["ping", "-c", "1", "8.8.8.8"],
+                     capture_output=True, text=True, timeout=5)
+print(res.returncode, res.stdout[:80])`]]],
+["Data with NumPy and Pandas",[
+["NumPy vectors",r`import numpy as np
+a = np.array([1, 2, 3]); b = np.array([4, 5, 6])
+print(a + b, a @ b, a.mean(), np.linalg.norm(a))`],
+["Pandas groupby",r`import pandas as pd
+df = pd.DataFrame({"dc": ["A", "A", "B"], "cpu": [70, 50, 30]})
+print(df.groupby("dc")["cpu"].mean())`]]],
+["GenAI and FDE Toolkit",[
+["Cosine similarity",r`import numpy as np
+def cos(a, b):
+    a, b = np.array(a), np.array(b)
+    return float(a @ b / (np.linalg.norm(a) * np.linalg.norm(b)))
+print(cos([1, 0, 1], [1, 1, 0]))`],
+["Text chunking with overlap",r`def chunk(text, size=200, overlap=40):
+    out, i = [], 0
+    while i < len(text):
+        out.append(text[i:i + size]); i += size - overlap
+    return out
+print(len(chunk("x" * 1000)))`],
+["Top-k retrieval (RAG core)",r`import numpy as np
+def top_k(q_vec, doc_vecs, docs, k=3):
+    sims = doc_vecs @ q_vec / (np.linalg.norm(doc_vecs, axis=1) * np.linalg.norm(q_vec))
+    return [docs[i] for i in np.argsort(-sims)[:k]]`],
+["Call an LLM API (Anthropic SDK)",r`# pip install anthropic ; set ANTHROPIC_API_KEY
+import anthropic
+c = anthropic.Anthropic()
+m = c.messages.create(model="claude-sonnet-5-5", max_tokens=300,
+    messages=[{"role": "user", "content": "Explain BGP in 2 lines"}])
+print(m.content[0].text)`],
+["Validate model output (pydantic)",r`# pip install pydantic
+from pydantic import BaseModel, ValidationError
+class Ticket(BaseModel):
+    severity: int
+    summary: str
+try: print(Ticket.model_validate_json('{"severity": 2, "summary": "link flap"}'))
+except ValidationError as e: print(e)`],
+["Tiny evaluation harness",r`cases = [("2+2", "4"), ("capital of France", "Paris")]
+def run(ask):
+    hits = sum(exp.lower() in ask(q).lower() for q, exp in cases)
+    return hits / len(cases)
+print(run(lambda q: "4" if "2+2" in q else "Paris"))`]]],
+["Testing and Logging",[
+["logging setup",r`import logging
+logging.basicConfig(level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s")
+log = logging.getLogger("fde")
+log.info("deploy started"); log.error("health check failed")`],
+["pytest basics",r`# test_math.py ; run: pytest -q
+def add(a, b): return a + b
+def test_add(): assert add(2, 3) == 5
+import pytest
+@pytest.mark.parametrize("a,b,e", [(1, 1, 2), (0, 5, 5)])
+def test_many(a, b, e): assert add(a, b) == e`]]],
+["Revision Mini Projects",[
+["Log analyzer",r`import re
+from collections import Counter
+lines = ["ERROR r1 down", "INFO r2 ok", "ERROR r1 down"]
+lv = Counter(re.match(r"(\w+)", l).group(1) for l in lines)
+print(lv)`],
+["Async health checker",r`import asyncio
+async def check(h):
+    try:
+        _, w = await asyncio.wait_for(asyncio.open_connection(h, 443), 3)
+        w.close(); return h, "up"
+    except Exception: return h, "down"
+print(asyncio.run(asyncio.gather(*[check(h) for h in ["example.com"]])) if False else "run inside async main")`],
+["CLI todo with JSON storage",r`import json, sys, pathlib
+f = pathlib.Path("todo.json")
+todo = json.loads(f.read_text()) if f.exists() else []
+if len(sys.argv) > 1: todo.append(" ".join(sys.argv[1:]))
+f.write_text(json.dumps(todo)); print(todo)`]]]
+];
+const $=s=>document.querySelector(s),out=$("#out"),links=$("#links");
+let done={};try{done=JSON.parse(localStorage.getItem("pyfde")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("pyfde",JSON.stringify(done))}catch(e){}};
+const total=M.reduce((a,m)=>a+m[1].length,0);
+function render(){
+  const q=$("#q").value.trim().toLowerCase();let shown=0;out.innerHTML="";
+  M.forEach((m,mi)=>{
+    const items=m[1].map((p,pi)=>[p,pi]).filter(([p])=>!q||(p[0]+p[1]+m[0]).toLowerCase().includes(q));
+    if(!items.length)return;
+    const h=document.createElement("h2");h.id="m"+mi;h.innerHTML="<span>"+String(mi+1).padStart(2,"0")+"</span> ";h.append(m[0]);out.append(h);
+    const g=document.createElement("div");g.className="g";
+    items.forEach(([p,pi])=>{
+      shown++;const k=mi+"-"+pi,c=document.createElement("div");c.className="c"+(done[k]?" d":"");
+      c.innerHTML='<div class="h"><b></b><strong></strong><button class="dn"></button><button class="cp">Copy code</button></div><pre></pre>';
+      c.querySelector("b").textContent="#"+(pi+1);c.querySelector("strong").textContent=p[0];c.querySelector("pre").textContent=p[1];
+      const dn=c.querySelector(".dn");dn.textContent=done[k]?"Done":"Mark done";
+      dn.onclick=()=>{done[k]=!done[k];if(!done[k])delete done[k];save();render()};
+      c.querySelector(".cp").onclick=e=>{navigator.clipboard.writeText(p[1]).then(()=>{e.target.textContent="Copied";setTimeout(()=>e.target.textContent="Copy code",1200)}).catch(()=>{})};
+      g.append(c)});
+    out.append(g)});
+  if(!shown)out.innerHTML='<div class="none">No programs match your search.</div>';
+  $("#cnt").textContent=shown+" programs shown";
+  const dc=Object.keys(done).length;$("#pb").style.width=(100*dc/total)+"%";
+  links.innerHTML="";
+  M.forEach((m,mi)=>{const a=document.createElement("a"),n=m[1].filter((_,pi)=>done[mi+"-"+pi]).length;
+    a.href="#m"+mi;a.innerHTML="<span><b>"+String(mi+1).padStart(2,"0")+"</b></span><i>"+n+"/"+m[1].length+"</i>";
+    a.firstChild.append(m[0]);links.append(a)});
+}
+$("#q").oninput=render;
+$("#all").onclick=()=>{$("#q").value="";render();scrollTo(0,0)};
+$("#th").onclick=()=>{const d=document.documentElement,dark=d.dataset.theme!=="light";d.dataset.theme=dark?"light":"dark"};
+render();
+</script>
+</body>
+</html>

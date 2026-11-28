@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python Interview Lab: MAANG, Cisco, Oracle</title>
+<style>
+:root{--bg:#0a0f22;--pn:#101936;--tx:#e8ebff;--mu:#8d97c0;--ac:#9ec5ff;--bl:#8ec5ff;--bd:#1e2a57;--cb:transparent;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0f22;--pn:#101936;--tx:#e8ebff;--mu:#8d97c0;--ac:#9ec5ff;--bl:#8ec5ff;--bd:#1e2a57;--cb:transparent}}
+:root[data-theme="light"]{--bg:#eef2fb;--pn:#fff;--tx:#0b1020;--mu:#55618a;--ac:#2563eb;--bl:#1d4ed8;--bd:#d0d9f0;--cb:#f3f6fd}
+:root[data-theme="dark"]{--bg:#0a0f22;--pn:#101936;--tx:#e8ebff;--mu:#8d97c0;--ac:#9ec5ff;--bl:#8ec5ff;--bd:#1e2a57;--cb:transparent}
+*{box-sizing:border-box}html{scroll-padding-top:90px;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+aside{position:fixed;top:env(safe-area-inset-top,0px);bottom:0;left:0;width:250px;padding:18px 14px;overflow:auto;border-right:1px solid var(--bd);background:var(--pn)}
+aside h1{font-size:18px;margin:0 0 4px}aside small{color:var(--mu);display:block;font-size:12px}
+aside a{display:flex;justify-content:space-between;gap:6px;padding:7px 10px;margin-top:2px;border-radius:8px;color:var(--tx);text-decoration:none;font-size:14px}
+aside a:hover{background:var(--bd)}aside a b{color:var(--bl);margin-right:6px}aside a i{font-style:normal;color:var(--mu);font-size:12px}
+main{margin-left:250px;padding:0 22px 40px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:14px 0 10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.top input{flex:1;min-width:200px;padding:11px 14px;border-radius:10px;border:1px solid var(--bd);background:var(--pn);color:var(--tx);font-size:15px}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--pn);color:var(--tx);border-radius:10px;padding:9px 14px;font-size:14px}
+button:hover{border-color:var(--ac)}
+.bar{height:6px;background:var(--bd);border-radius:6px;overflow:hidden;flex-basis:100%}.bar div{height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--bl));transition:width .3s}
+.st{color:var(--mu);font-size:13px}
+h2{margin:26px 0 10px;font-size:20px}h2 span{color:var(--bl)}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,430px),1fr));gap:14px}
+.c{background:var(--pn);border:1px solid var(--bd);border-radius:14px;overflow:hidden;min-width:0}
+.c.d{border-color:var(--ac)}
+.h{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.h b{color:var(--bl);font-weight:600}.h strong{flex:1;min-width:120px}
+.h button{padding:5px 10px;font-size:13px}.h .dn{color:var(--ac)}
+.h .cp{background:#18244f;color:#e8ebff;border-color:#2b3a72}:root[data-theme="light"] .h .cp{background:#e6ecff;color:#0b1020;border-color:var(--bd)}
+.lv{font-size:11px;padding:2px 9px;border-radius:20px;border:1px solid var(--bd)}.lv.E{color:#4ade80}.lv.M{color:#fbbf24}.lv.H{color:#fb7185}
+pre{margin:0;padding:14px;background:var(--cb);color:var(--tx);overflow-x:auto;font:13px/1.55 ui-monospace,Menlo,Consolas,monospace;tab-size:4}
+.ex{padding:10px 14px;color:var(--mu);font-size:13px;border-bottom:1px solid var(--bd)}.ex b{color:var(--bl)}
+.none{padding:40px;text-align:center;color:var(--mu)}
+@media(max-width:820px){aside{position:static;width:auto;border:0;border-bottom:1px solid var(--bd);display:flex;gap:6px;overflow-x:auto;padding:10px}aside h1,aside small{display:none}aside a{white-space:nowrap}aside a i{display:none}main{margin:0;padding:0 12px 30px}.top{position:static}}
+</style>
+</head>
+<body>
+<aside><h1>Python Interview Lab</h1><small>Patterns commonly asked at Google, Meta, Amazon, Apple, Netflix, Microsoft, Cisco, Oracle and similar companies. This is a topic-based list, not a verified list per company.</small><div id="links"></div></aside>
+<main>
+<div class="top">
+<input id="q" type="search" placeholder="Search: two sum, lru, dp, graph, heap, gil, easy, hard...">
+<button id="all">Show all</button><button class="lb">Easy</button><button class="lb">Medium</button><button class="lb">Hard</button><button id="th">Light / Dark</button>
+<span class="st" id="cnt"></span>
+<div class="bar"><div id="pb"></div></div>
+</div>
+<div id="out"></div>
+</main>
+<script>
+const r=String.raw,LV={E:"Easy",M:"Medium",H:"Hard"};
+const M=[
+["Arrays and Strings",[
+["Reverse string and palindrome","E",r`s = "Level"
+t = s.lower()
+print(t == t[::-1], s[::-1])`],
+["Valid anagram","E",r`from collections import Counter
+print(Counter("listen") == Counter("silent"))`],
+["First non-repeating character","E",r`from collections import Counter
+s = "swiss"; c = Counter(s)
+print(next((ch for ch in s if c[ch] == 1), None))`],
+["Two Sum","E",r`def two_sum(nums, target):
+    seen = {}
+    for i, n in enumerate(nums):
+        if target - n in seen: return [seen[target - n], i]
+        seen[n] = i
+print(two_sum([2, 7, 11, 15], 9))`],
+["Valid parentheses","E",r`def valid(s):
+    st, pair = [], {")": "(", "]": "[", "}": "{"}
+    for ch in s:
+        if ch in pair:
+            if not st or st.pop() != pair[ch]: return False
+        else: st.append(ch)
+    return not st
+print(valid("{[()]}"))`],
+["Longest substring without repeating chars","M",r`def longest(s):
+    seen, l, best = {}, 0, 0
+    for r, ch in enumerate(s):
+        if ch in seen and seen[ch] >= l: l = seen[ch] + 1
+        seen[ch] = r; best = max(best, r - l + 1)
+    return best
+print(longest("abcabcbb"))`],
+["Maximum subarray (Kadane)","M",r`def kadane(a):
+    cur = best = a[0]
+    for x in a[1:]:
+        cur = max(x, cur + x); best = max(best, cur)
+    return best
+print(kadane([-2, 1, -3, 4, -1, 2, 1, -5, 4]))`],
+["Merge intervals","M",r`def merge(iv):
+    iv.sort(); out = [iv[0]]
+    for s, e in iv[1:]:
+        if s <= out[-1][1]: out[-1][1] = max(out[-1][1], e)
+        else: out.append([s, e])
+    return out
+print(merge([[1, 3], [2, 6], [8, 10]]))`],
+["Move zeroes in place","E",r`a = [0, 1, 0, 3, 12]
+k = 0
+for i in range(len(a)):
+    if a[i]: a[k], a[i] = a[i], a[k]; k += 1
+print(a)`],
+["Product of array except self","M",r`def prod(a):
+    out, p = [1] * len(a), 1
+    for i in range(len(a)): out[i] = p; p *= a[i]
+    p = 1
+    for i in range(len(a) - 1, -1, -1): out[i] *= p; p *= a[i]
+    return out
+print(prod([1, 2, 3, 4]))`],
+["Rotate list by k and common prefix","E",r`import os
+a = [1, 2, 3, 4, 5]; k = 2 % len(a)
+print(a[-k:] + a[:-k])
+print(os.path.commonprefix(["flower", "flow", "flight"]))`],
+["3Sum","M",r`def three_sum(a):
+    a.sort(); out = []
+    for i in range(len(a) - 2):
+        if i and a[i] == a[i - 1]: continue
+        l, r = i + 1, len(a) - 1
+        while l < r:
+            s = a[i] + a[l] + a[r]
+            if s < 0: l += 1
+            elif s > 0: r -= 1
+            else:
+                out.append([a[i], a[l], a[r]]); l += 1
+                while l < r and a[l] == a[l - 1]: l += 1
+    return out
+print(three_sum([-1, 0, 1, 2, -1, -4]))`],
+["Container with most water","M",r`def water(h):
+    l, r, best = 0, len(h) - 1, 0
+    while l < r:
+        best = max(best, min(h[l], h[r]) * (r - l))
+        if h[l] < h[r]: l += 1
+        else: r -= 1
+    return best
+print(water([1, 8, 6, 2, 5, 4, 8, 3, 7]))`],
+["Flatten nested list","E",r`def flat(x):
+    for i in x:
+        if isinstance(i, list): yield from flat(i)
+        else: yield i
+print(list(flat([1, [2, [3, 4]], 5])))`],
+["Rotate matrix 90 degrees","M",r`m = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print([list(r) for r in zip(*m[::-1])])`]]],
+["Math and Numbers",[
+["Fibonacci","E",r`def fib(n):
+    a, b = 0, 1
+    for _ in range(n): a, b = b, a + b
+    return a
+print([fib(i) for i in range(10)])`],
+["Sieve of Eratosthenes","M",r`def sieve(n):
+    p = [True] * (n + 1); p[0:2] = [False, False]
+    for i in range(2, int(n ** 0.5) + 1):
+        if p[i]: p[i*i::i] = [False] * len(p[i*i::i])
+    return [i for i, v in enumerate(p) if v]
+print(sieve(50))`],
+["GCD and LCM","E",r`from math import gcd
+a, b = 12, 18
+print(gcd(a, b), a * b // gcd(a, b))`],
+["Armstrong number","E",r`n = 153
+print(n == sum(int(d) ** len(str(n)) for d in str(n)))`],
+["Set bits and power of two","E",r`n = 16
+print(bin(n).count("1"), n > 0 and n & (n - 1) == 0)`],
+["FizzBuzz","E",r`for i in range(1, 16):
+    print("Fizz" * (i % 3 == 0) + "Buzz" * (i % 5 == 0) or i)`]]],
+["Hashing and Counting",[
+["Group anagrams","M",r`from collections import defaultdict
+g = defaultdict(list)
+for w in ["eat", "tea", "tan", "ate", "nat", "bat"]:
+    g["".join(sorted(w))].append(w)
+print(list(g.values()))`],
+["Top K frequent elements","M",r`from collections import Counter
+print([x for x, _ in Counter([1, 1, 1, 2, 2, 3]).most_common(2)])`],
+["Longest consecutive sequence","M",r`def longest(a):
+    s, best = set(a), 0
+    for n in s:
+        if n - 1 not in s:
+            m = n
+            while m + 1 in s: m += 1
+            best = max(best, m - n + 1)
+    return best
+print(longest([100, 4, 200, 1, 3, 2]))`],
+["Subarray sum equals K","M",r`def count(a, k):
+    pre, c, tot = {0: 1}, 0, 0
+    for x in a:
+        tot += x; c += pre.get(tot - k, 0)
+        pre[tot] = pre.get(tot, 0) + 1
+    return c
+print(count([1, 1, 1], 2))`],
+["LRU cache","M",r`from collections import OrderedDict
+class LRU:
+    def __init__(self, cap): self.c, self.d = cap, OrderedDict()
+    def get(self, k):
+        if k not in self.d: return -1
+        self.d.move_to_end(k); return self.d[k]
+    def put(self, k, v):
+        self.d[k] = v; self.d.move_to_end(k)
+        if len(self.d) > self.c: self.d.popitem(last=False)`],
+["Missing number and duplicates","E",r`a = [3, 0, 1]
+print(len(a) * (len(a) + 1) // 2 - sum(a))
+b = [1, 3, 4, 2, 2]
+print([x for x in set(b) if b.count(x) > 1])`]]],
+["Linked List, Stack, Queue",[
+["Reverse a linked list","E",r`class Node:
+    def __init__(self, v, nxt=None): self.v, self.next = v, nxt
+def reverse(h):
+    prev = None
+    while h: h.next, prev, h = prev, h, h.next
+    return prev
+h = reverse(Node(1, Node(2, Node(3))))
+while h: print(h.v, end=" "); h = h.next`],
+["Detect cycle (Floyd)","M",r`def has_cycle(h):
+    s = f = h
+    while f and f.next:
+        s, f = s.next, f.next.next
+        if s is f: return True
+    return False`],
+["Merge sorted lists","E",r`import heapq
+print(list(heapq.merge([1, 3, 5], [2, 4, 6])))`],
+["Min stack","M",r`class MinStack:
+    def __init__(self): self.s = []
+    def push(self, x): self.s.append((x, min(x, self.s[-1][1]) if self.s else x))
+    def pop(self): return self.s.pop()[0]
+    def get_min(self): return self.s[-1][1]`],
+["Queue using two stacks","E",r`class Q:
+    def __init__(self): self.i, self.o = [], []
+    def push(self, x): self.i.append(x)
+    def pop(self):
+        if not self.o:
+            while self.i: self.o.append(self.i.pop())
+        return self.o.pop()`]]],
+["Trees and Graphs",[
+["Tree depth and inorder","E",r`class T:
+    def __init__(self, v, l=None, r=None): self.v, self.l, self.r = v, l, r
+def depth(t): return 0 if not t else 1 + max(depth(t.l), depth(t.r))
+def inorder(t): return inorder(t.l) + [t.v] + inorder(t.r) if t else []
+t = T(2, T(1), T(3))
+print(depth(t), inorder(t))`],
+["Validate BST","M",r`# uses class T from the previous program
+def valid(t, lo=float("-inf"), hi=float("inf")):
+    if not t: return True
+    return lo < t.v < hi and valid(t.l, lo, t.v) and valid(t.r, t.v, hi)`],
+["Level order traversal (BFS)","M",r`from collections import deque
+def levels(t):
+    out, q = [], deque([t] if t else [])
+    while q:
+        out.append([n.v for n in q])
+        q = deque(c for n in q for c in (n.l, n.r) if c)
+    return out`],
+["Number of islands (DFS)","M",r`def islands(g):
+    def dfs(i, j):
+        if 0 <= i < len(g) and 0 <= j < len(g[0]) and g[i][j] == "1":
+            g[i][j] = "0"
+            for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)): dfs(i + di, j + dj)
+    n = 0
+    for i in range(len(g)):
+        for j in range(len(g[0])):
+            if g[i][j] == "1": dfs(i, j); n += 1
+    return n`],
+["Dijkstra shortest path","H",r`import heapq
+def dijkstra(g, s):
+    d, pq = {s: 0}, [(0, s)]
+    while pq:
+        w, u = heapq.heappop(pq)
+        if w > d.get(u, 1e9): continue
+        for v, c in g[u]:
+            if w + c < d.get(v, 1e9):
+                d[v] = w + c; heapq.heappush(pq, (d[v], v))
+    return d
+g = {"A": [("B", 1), ("C", 4)], "B": [("C", 2)], "C": []}
+print(dijkstra(g, "A"))`],
+["Topological sort (Kahn)","M",r`from collections import deque
+def topo(n, edges):
+    adj, indeg = [[] for _ in range(n)], [0] * n
+    for a, b in edges: adj[a].append(b); indeg[b] += 1
+    q, out = deque(i for i in range(n) if not indeg[i]), []
+    while q:
+        u = q.popleft(); out.append(u)
+        for v in adj[u]:
+            indeg[v] -= 1
+            if not indeg[v]: q.append(v)
+    return out if len(out) == n else []`]]],
+["Sorting and Searching",[
+["Binary search","E",r`def bs(a, t):
+    lo, hi = 0, len(a) - 1
+    while lo <= hi:
+        m = (lo + hi) // 2
+        if a[m] == t: return m
+        lo, hi = (m + 1, hi) if a[m] < t else (lo, m - 1)
+    return -1`],
+["Merge sort","M",r`def msort(a):
+    if len(a) < 2: return a
+    l, r = msort(a[:len(a) // 2]), msort(a[len(a) // 2:])
+    out = []
+    while l and r: out.append(l.pop(0) if l[0] <= r[0] else r.pop(0))
+    return out + l + r`],
+["Quick sort","M",r`def qsort(a):
+    if len(a) < 2: return a
+    p = a[len(a) // 2]
+    return qsort([x for x in a if x < p]) + [x for x in a if x == p] + qsort([x for x in a if x > p])`],
+["Kth largest element (heap)","M",r`import heapq
+print(heapq.nlargest(2, [3, 2, 1, 5, 6, 4])[-1])`],
+["Search in rotated sorted array","M",r`def search(a, t):
+    lo, hi = 0, len(a) - 1
+    while lo <= hi:
+        m = (lo + hi) // 2
+        if a[m] == t: return m
+        if a[lo] <= a[m]:
+            if a[lo] <= t < a[m]: hi = m - 1
+            else: lo = m + 1
+        else:
+            if a[m] < t <= a[hi]: lo = m + 1
+            else: hi = m - 1
+    return -1`]]],
+["Recursion and Dynamic Programming",[
+["Climbing stairs","E",r`def climb(n):
+    a, b = 1, 1
+    for _ in range(n - 1): a, b = b, a + b
+    return b
+print(climb(5))`],
+["Coin change","M",r`def coins(c, amt):
+    dp = [0] + [float("inf")] * amt
+    for a in range(1, amt + 1):
+        for x in c:
+            if x <= a: dp[a] = min(dp[a], dp[a - x] + 1)
+    return dp[amt] if dp[amt] != float("inf") else -1
+print(coins([1, 2, 5], 11))`],
+["Longest common subsequence","M",r`def lcs(a, b):
+    dp = [[0] * (len(b) + 1) for _ in range(len(a) + 1)]
+    for i in range(len(a)):
+        for j in range(len(b)):
+            dp[i+1][j+1] = dp[i][j] + 1 if a[i] == b[j] else max(dp[i][j+1], dp[i+1][j])
+    return dp[-1][-1]
+print(lcs("abcde", "ace"))`],
+["0/1 Knapsack","M",r`def knap(w, v, cap):
+    dp = [0] * (cap + 1)
+    for wi, vi in zip(w, v):
+        for c in range(cap, wi - 1, -1): dp[c] = max(dp[c], dp[c - wi] + vi)
+    return dp[cap]
+print(knap([1, 3, 4], [15, 20, 30], 4))`],
+["Permutations and subsets","M",r`from itertools import permutations, combinations
+print(list(permutations([1, 2, 3]))[:3])
+a = [1, 2, 3]
+print([c for r in range(len(a) + 1) for c in combinations(a, r)])`],
+["Longest increasing subsequence","M",r`import bisect
+def lis(a):
+    t = []
+    for x in a:
+        i = bisect.bisect_left(t, x)
+        if i == len(t): t.append(x)
+        else: t[i] = x
+    return len(t)
+print(lis([10, 9, 2, 5, 3, 7, 101, 18]))`],
+["Edit distance","H",r`def edit(a, b):
+    dp = list(range(len(b) + 1))
+    for i in range(1, len(a) + 1):
+        prev, dp[0] = dp[0], i
+        for j in range(1, len(b) + 1):
+            prev, dp[j] = dp[j], prev if a[i-1] == b[j-1] else 1 + min(prev, dp[j], dp[j-1])
+    return dp[-1]
+print(edit("horse", "ros"))`]]],
+["Python Language Questions",[
+["Mutable default argument trap","E",r`def add(x, lst=[]):
+    lst.append(x); return lst
+print(add(1), add(2))   # [1, 2] [1, 2] : shared list
+def safe(x, lst=None):
+    lst = [] if lst is None else lst
+    lst.append(x); return lst`],
+["Shallow vs deep copy","E",r`import copy
+a = [[1, 2], [3]]
+s, d = copy.copy(a), copy.deepcopy(a)
+a[0].append(9)
+print(s[0], d[0])   # [1, 2, 9] [1, 2]`],
+["is vs == and None check","E",r`a, b = [1], [1]
+print(a == b, a is b)   # True False
+x = None
+print(x is None)`],
+["Late binding in closures","M",r`fs = [lambda: i for i in range(3)]
+print([f() for f in fs])    # [2, 2, 2]
+fs = [lambda i=i: i for i in range(3)]
+print([f() for f in fs])    # [0, 1, 2]`],
+["Decorator with arguments","M",r`import functools
+def repeat(n):
+    def deco(fn):
+        @functools.wraps(fn)
+        def w(*a, **k):
+            for _ in range(n): r = fn(*a, **k)
+            return r
+        return w
+    return deco
+@repeat(3)
+def hi(): print("hi")
+hi()`],
+["Generator vs list memory","E",r`import sys
+print(sys.getsizeof([i for i in range(10**6)]))
+print(sys.getsizeof(i for i in range(10**6)))`],
+["GIL: threads vs processes","M",r`import time
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+def cpu(n): return sum(i * i for i in range(n))
+if __name__ == "__main__":
+    for Ex in (ThreadPoolExecutor, ProcessPoolExecutor):
+        t = time.time()
+        with Ex(4) as ex: list(ex.map(cpu, [3 * 10**6] * 4))
+        print(Ex.__name__, round(time.time() - t, 2))
+# CPU bound: processes win. I/O bound: threads or asyncio win.`]]],
+["Systems and Infra Rounds",[
+["Parse log, top error IP","M",r`import re
+from collections import Counter
+log = ["10.0.0.1 GET 500", "10.0.0.2 GET 200", "10.0.0.1 POST 500"]
+errs = Counter(l.split()[0] for l in log if re.search(r" 5\d\d$", l))
+print(errs.most_common(1))`],
+["IPv4 and CIDR validation","E",r`import ipaddress
+print(ipaddress.ip_address("192.168.1.10").is_private)
+net = ipaddress.ip_network("10.0.0.0/24")
+print(net.num_addresses, ipaddress.ip_address("10.0.0.5") in net)`],
+["Longest prefix match for routes","H",r`import ipaddress
+routes = {"10.0.0.0/8": "A", "10.1.0.0/16": "B", "0.0.0.0/0": "C"}
+def lpm(ip):
+    ip = ipaddress.ip_address(ip)
+    m = [(ipaddress.ip_network(p), n) for p, n in routes.items() if ip in ipaddress.ip_network(p)]
+    return max(m, key=lambda x: x[0].prefixlen)[1]
+print(lpm("10.1.2.3"))   # B`],
+["Token bucket rate limiter","H",r`import time
+class Bucket:
+    def __init__(self, rate, cap): self.rate, self.cap, self.t, self.tok = rate, cap, time.time(), cap
+    def allow(self):
+        now = time.time()
+        self.tok = min(self.cap, self.tok + (now - self.t) * self.rate); self.t = now
+        if self.tok >= 1: self.tok -= 1; return True
+        return False`],
+["Producer and consumer with Queue","M",r`import queue, threading
+q = queue.Queue(maxsize=5)
+def prod():
+    for i in range(5): q.put(i)
+    q.put(None)
+def cons():
+    while (x := q.get()) is not None: print("got", x)
+for f in (prod, cons): threading.Thread(target=f).start()`],
+["Retry decorator with backoff","M",r`import time, functools
+def retry(n=3, base=0.5):
+    def deco(fn):
+        @functools.wraps(fn)
+        def w(*a, **k):
+            for i in range(n):
+                try: return fn(*a, **k)
+                except Exception:
+                    if i == n - 1: raise
+                    time.sleep(base * 2 ** i)
+        return w
+    return deco`],
+["Word frequency from a file","E",r`from collections import Counter
+import re
+words = re.findall(r"\w+", open("a.txt").read().lower())
+print(Counter(words).most_common(5))`],
+["SQL with sqlite3 (group, having)","M",r`import sqlite3
+c = sqlite3.connect(":memory:")
+c.execute("create table emp(name text, dept text, sal int)")
+c.executemany("insert into emp values(?,?,?)", [("a", "IT", 90), ("b", "IT", 70), ("c", "HR", 60)])
+print(c.execute("select dept, avg(sal) from emp group by dept having avg(sal) > 65").fetchall())`]]],
+["Date and Time",[
+["Validate date with datetime.strptime","E",r`from datetime import datetime
+def valid(s, fmt="%Y-%m-%d"):
+    try: datetime.strptime(s, fmt); return True
+    except ValueError: return False
+print(valid("2024-02-29"), valid("2023-02-29"), valid("2024-13-01"))`],
+["Validate date without libraries","M",r`def is_leap(y): return y % 400 == 0 or (y % 4 == 0 and y % 100 != 0)
+def valid(d, m, y):
+    if y < 1 or not 1 <= m <= 12: return False
+    days = [31, 29 if is_leap(y) else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    return 1 <= d <= days[m - 1]
+print(valid(29, 2, 2024), valid(29, 2, 2023), valid(31, 4, 2024))`],
+["Validate dd/mm/yyyy with regex","M",r`import re
+from datetime import date
+def valid(s):
+    m = re.fullmatch(r"(\d{2})/(\d{2})/(\d{4})", s)
+    if not m: return False
+    d, mo, y = map(int, m.groups())
+    try: date(y, mo, d); return True
+    except ValueError: return False
+print(valid("29/02/2024"), valid("31/04/2024"), valid("1/1/2024"))`],
+["Parse multiple date formats","M",r`from datetime import datetime
+FMTS = ("%Y-%m-%d", "%d/%m/%Y", "%d-%b-%Y", "%m/%d/%Y")
+def parse(s):
+    for f in FMTS:
+        try: return datetime.strptime(s, f).date()
+        except ValueError: pass
+    return None
+print(parse("29-Feb-2024"), parse("2023-02-29"))`],
+["Day of week and days between dates","E",r`from datetime import date
+a, b = date(2024, 1, 1), date(2024, 12, 25)
+print(a.strftime("%A"), (b - a).days)`],
+["Add business days","M",r`from datetime import date, timedelta
+def add_business_days(d, n):
+    while n:
+        d += timedelta(days=1)
+        if d.weekday() < 5: n -= 1
+    return d
+print(add_business_days(date(2024, 12, 20), 5))`],
+["Age from date of birth","E",r`from datetime import date
+def age(dob, today=None):
+    t = today or date.today()
+    return t.year - dob.year - ((t.month, t.day) < (dob.month, dob.day))
+print(age(date(1990, 6, 15), date(2024, 6, 14)))   # 33`],
+["Timezone conversion with zoneinfo","M",r`from datetime import datetime
+from zoneinfo import ZoneInfo
+t = datetime(2024, 3, 10, 9, 0, tzinfo=ZoneInfo("Asia/Kolkata"))
+print(t.astimezone(ZoneInfo("America/New_York")))`]]],
+["OOP and Design",[
+["Singleton","E",r`class Single:
+    _i = None
+    def __new__(cls):
+        if cls._i is None: cls._i = super().__new__(cls)
+        return cls._i
+print(Single() is Single())`],
+["Bank account with custom exception","E",r`class Insufficient(Exception): pass
+class Account:
+    def __init__(self, bal=0): self.bal = bal
+    def withdraw(self, x):
+        if x > self.bal: raise Insufficient(f"balance {self.bal}")
+        self.bal -= x`],
+["Parking lot","M",r`class Lot:
+    def __init__(self, n): self.free, self.cars = list(range(n)), {}
+    def park(self, plate):
+        if not self.free: return None
+        s = self.free.pop(0); self.cars[plate] = s; return s
+    def leave(self, plate): self.free.append(self.cars.pop(plate))`],
+["Event emitter (observer)","M",r`class Emitter:
+    def __init__(self): self.h = {}
+    def on(self, e, fn): self.h.setdefault(e, []).append(fn)
+    def emit(self, e, *a): [fn(*a) for fn in self.h.get(e, [])]
+em = Emitter(); em.on("alert", print); em.emit("alert", "link down")`]]]
+];
+const EX={
+"Reverse string and palindrome":"Slicing with [::-1] reverses the string. A palindrome equals its own reverse, so lower-case first to ignore case. O(n).",
+"Valid anagram":"Two words are anagrams if every letter appears the same number of times. Counter builds and compares the counts. O(n).",
+"First non-repeating character":"Count every character once, then scan the string again and return the first one whose count is 1. O(n).",
+"Two Sum":"Store each value with its index in a dict. For each number, check if target minus number was already seen. One pass, O(n) time and space.",
+"Valid parentheses":"Push openers on a stack. Each closer must match the most recent opener. The string is valid only if the stack ends empty. O(n).",
+"Longest substring without repeating chars":"Sliding window with a last-seen index per character. When a repeat appears inside the window, move the left edge just past it. O(n).",
+"Maximum subarray (Kadane)":"At each element, either extend the running sum or restart from this element. Track the best sum seen. O(n) time, O(1) space.",
+"Merge intervals":"Sort by start. If the next interval starts before the last one ends, extend the last end, else append a new interval. O(n log n).",
+"Move zeroes in place":"Pointer k marks the next slot for a non-zero value. Swap each non-zero element into it. Order is kept, no extra list. O(n).",
+"Product of array except self":"Pass 1 stores the product of everything to the left, pass 2 multiplies in everything to the right. No division, so zeros are safe. O(n).",
+"Rotate list by k and common prefix":"Rotation is the last k items placed in front of the rest. os.path.commonprefix finds the shared leading characters of strings. O(n).",
+"3Sum":"Sort, fix one number, then use two pointers on the rest to find pairs that cancel it. Skip duplicates so triplets are unique. O(n^2).",
+"Container with most water":"Two pointers at both ends. Area depends on the shorter wall, so move the shorter side inward to try for a taller one. O(n).",
+"Flatten nested list":"A recursive generator. If an item is a list, delegate to it with yield from, else yield the value. Handles any depth lazily.",
+"Rotate matrix 90 degrees":"Reverse the row order, then transpose with zip(*). Together these give a clockwise rotation. O(n^2).",
+"Fibonacci":"Keep only the last two values and update them in a loop. Avoids the exponential cost of plain recursion. O(n) time, O(1) space.",
+"Sieve of Eratosthenes":"Assume all numbers are prime, then for each prime cross out its multiples starting at its square. O(n log log n).",
+"GCD and LCM":"math.gcd uses Euclid algorithm. LCM follows from a * b / gcd(a, b).",
+"Armstrong number":"A number equals the sum of its digits each raised to the number of digits. 153 = 1^3 + 5^3 + 3^3.",
+"Set bits and power of two":"bin(n).count of 1 counts set bits. n & (n - 1) clears the lowest set bit, so a power of two (exactly one bit) gives 0.",
+"FizzBuzz":"Build the word by string concatenation. An empty string is falsy, so the or falls back to the number itself. O(n).",
+"Group anagrams":"Words with the same sorted letters are anagrams, so the sorted word is the dict key. O(n * k log k) for k-letter words.",
+"Top K frequent elements":"Counter tallies frequencies and most_common(k) returns the k largest. About O(n log k).",
+"Longest consecutive sequence":"Put numbers in a set. Only start counting from a number with no predecessor, so each run is walked once. O(n).",
+"Subarray sum equals K":"Keep a running prefix sum and a count of earlier prefix sums. Any earlier prefix equal to total minus k ends a valid subarray. O(n).",
+"LRU cache":"OrderedDict keeps usage order. move_to_end marks a key as recent and popitem(last=False) evicts the oldest. get and put are O(1).",
+"Missing number and duplicates":"Missing number: expected sum n(n+1)/2 minus actual sum. Duplicates: values seen more than once. count() makes this O(n^2), use Counter or a set for O(n).",
+"Reverse a linked list":"Walk the list and flip each next pointer to the previous node. O(n) time, O(1) space.",
+"Detect cycle (Floyd)":"A slow pointer moves 1 step and a fast one moves 2. If there is a loop they meet, else fast reaches the end. O(n), O(1) space.",
+"Merge sorted lists":"heapq.merge lazily merges already sorted inputs. In interviews you may need to splice nodes with two pointers. O(n + m).",
+"Min stack":"Store each value together with the minimum so far. Then push, pop and get_min are all O(1).",
+"Queue using two stacks":"Push to the input stack. When popping and the output stack is empty, move everything over, which reverses order into FIFO. Amortized O(1).",
+"Tree depth and inorder":"Depth is 1 plus the deeper child. Inorder visits left, node, right, which gives sorted order for a BST. O(n).",
+"Validate BST":"Pass an allowed (low, high) range down the tree. Each node must fall inside it. Comparing only with the parent is a common bug. O(n).",
+"Level order traversal (BFS)":"Process a queue one whole level at a time, collecting the children for the next level. O(n).",
+"Number of islands (DFS)":"Scan the grid. On each unvisited land cell, flood-fill it with DFS to sink the whole island and count one. O(rows * cols).",
+"Dijkstra shortest path":"A min-heap always pops the closest unfinished node, then relaxes its edges. Needs non-negative weights. O((V + E) log V).",
+"Topological sort (Kahn)":"Start with nodes of in-degree 0, remove them and lower neighbors in-degree. If fewer than n nodes come out, there is a cycle. O(V + E).",
+"Binary search":"Halve the search range each step by comparing with the middle. Input must be sorted. O(log n).",
+"Merge sort":"Split in half, sort each half, merge. Stable and always O(n log n). pop(0) is slow here, use indexes in production code.",
+"Quick sort":"Pick a pivot and split into smaller, equal and larger parts, then recurse. Average O(n log n), worst O(n^2). This version is not in place.",
+"Kth largest element (heap)":"nlargest keeps a heap of size k, so the kth largest is the last result. O(n log k).",
+"Search in rotated sorted array":"At each step one half is still sorted. Check whether the target lies in that half and discard the other. O(log n).",
+"Climbing stairs":"Ways to reach step n equals ways to n-1 plus ways to n-2, which is Fibonacci. O(n) time, O(1) space.",
+"Coin change":"dp[a] is the fewest coins for amount a, built from dp[a - coin] + 1. Returns -1 if impossible. O(amount * coins).",
+"Longest common subsequence":"dp[i][j] extends the diagonal on a match, else takes the better of the top or left cell. O(n * m).",
+"0/1 Knapsack":"1D dp over capacity. Loop capacity backwards so each item is used at most once. O(items * capacity).",
+"Permutations and subsets":"itertools generates them directly. Interviewers often want the backtracking version. Sizes are n! and 2^n.",
+"Longest increasing subsequence":"Keep a tails array and place each number with bisect, replacing the first tail that is not smaller. Length of tails is the answer. O(n log n).",
+"Edit distance":"dp over prefixes: insert, delete or replace costs 1, a match costs 0. One rolling row saves memory. O(n * m).",
+"Mutable default argument trap":"A default list is created once when the function is defined, so every call shares it. Use None as the default and create the list inside.",
+"Shallow vs deep copy":"copy.copy duplicates only the outer list, so nested lists are still shared. deepcopy duplicates everything.",
+"is vs == and None check":"== compares values, is compares object identity. Use is None for None checks.",
+"Late binding in closures":"A lambda looks up i when it is called, after the loop ended. Bind the current value with a default argument i=i.",
+"Decorator with arguments":"Three layers: repeat(n) returns the decorator, which returns the wrapper. functools.wraps keeps the original name and docstring.",
+"Generator vs list memory":"A generator produces values lazily so it uses tiny constant memory. A list stores every item at once.",
+"GIL: threads vs processes":"The GIL lets one thread run Python bytecode at a time. CPU-bound work needs processes, I/O-bound work is fine with threads or asyncio.",
+"Parse log, top error IP":"Filter lines whose status starts with 5, then count by IP with Counter and take the top. O(n).",
+"IPv4 and CIDR validation":"The ipaddress module validates addresses, checks is_private, and tests membership in a network. Better than hand-written regex.",
+"Longest prefix match for routes":"Collect every route that contains the IP and pick the longest prefix length, which is how routers choose. Large tables use a trie.",
+"Token bucket rate limiter":"Tokens refill at a fixed rate up to a cap. A request is allowed if a token is available, which permits short bursts.",
+"Producer and consumer with Queue":"queue.Queue is thread-safe and the maxsize gives backpressure. None is a sentinel telling the consumer to stop.",
+"Retry decorator with backoff":"Wait 0.5s, 1s, 2s between attempts and re-raise on the last one. Add random jitter in production to avoid retry storms.",
+"Word frequency from a file":"Regex extracts lower-cased words and Counter tallies them. For huge files, read in chunks or line by line.",
+"SQL with sqlite3 (group, having)":"GROUP BY aggregates per department and HAVING filters the groups after aggregation. Parameterized inserts prevent SQL injection.",
+"Singleton":"__new__ returns the same instance every time. A module-level object is often the simpler Python answer.",
+"Bank account with custom exception":"A custom exception gives a meaningful error. Validate before changing state so the balance is never corrupted.",
+"Parking lot":"A list of free slots plus a plate to slot map. park pops a free slot and leave returns it. Use deque for O(1) pops.",
+"Event emitter (observer)":"A dict maps event names to handler lists, and emit calls each handler. This is the base of pub/sub designs.",
+"Validate date with datetime.strptime":"strptime raises ValueError for impossible dates, including Feb 29 in non-leap years and month 13, so try/except is a full validator. This is the answer to give first.",
+"Validate date without libraries":"Check the month is 1 to 12, then the day against a days-per-month list where February depends on the leap rule (divisible by 400, or by 4 but not 100). O(1).",
+"Validate dd/mm/yyyy with regex":"Regex checks only the shape (two digits, two digits, four digits). The date() constructor then checks that the day exists. Never rely on regex alone for dates.",
+"Parse multiple date formats":"Try each format in turn and return the first that parses. Note that dd/mm and mm/dd are ambiguous for dates like 03/04/2024, so the order of formats decides the result.",
+"Day of week and days between dates":"Subtracting two date objects gives a timedelta, and .days is the gap. strftime with %A gives the weekday name.",
+"Add business days":"Step one day at a time and count only weekdays (weekday() below 5). Holidays are not handled, a real version needs a holiday set.",
+"Age from date of birth":"Subtract the years, then subtract 1 if this year birthday has not happened yet. The tuple comparison (month, day) does that check neatly.",
+"Timezone conversion with zoneinfo":"Attach a timezone to the datetime, then astimezone converts it and handles daylight saving automatically. Store times in UTC and convert only for display."
+};
+const $=s=>document.querySelector(s),out=$("#out"),links=$("#links");
+let done={};try{done=JSON.parse(localStorage.getItem("pyint")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("pyint",JSON.stringify(done))}catch(e){}};
+const total=M.reduce((a,m)=>a+m[1].length,0);
+function render(){
+  const q=$("#q").value.trim().toLowerCase();let shown=0;out.innerHTML="";
+  M.forEach((m,mi)=>{
+    const items=m[1].map((p,pi)=>[p,pi]).filter(([p])=>!q||(p[0]+p[2]+m[0]+LV[p[1]]+(EX[p[0]]||"")).toLowerCase().includes(q));
+    if(!items.length)return;
+    const h=document.createElement("h2");h.id="m"+mi;h.innerHTML="<span>"+String(mi+1).padStart(2,"0")+"</span> ";h.append(m[0]);out.append(h);
+    const g=document.createElement("div");g.className="g";
+    items.forEach(([p,pi])=>{
+      shown++;const k=mi+"-"+pi,c=document.createElement("div");c.className="c"+(done[k]?" d":"");
+      c.innerHTML='<div class="h"><b></b><strong></strong><span class="lv"></span><button class="dn"></button><button class="cp">Copy code</button></div><div class="ex"></div><pre></pre>';
+      c.querySelector("b").textContent="#"+(pi+1);c.querySelector("strong").textContent=p[0];c.querySelector("pre").textContent=p[2];const ex=c.querySelector(".ex");ex.innerHTML="<b>Explanation:</b> ";ex.append(EX[p[0]]||"");
+      const lv=c.querySelector(".lv");lv.textContent=LV[p[1]];lv.classList.add(p[1]);
+      const dn=c.querySelector(".dn");dn.textContent=done[k]?"Done":"Mark done";
+      dn.onclick=()=>{done[k]=!done[k];if(!done[k])delete done[k];save();render()};
+      c.querySelector(".cp").onclick=e=>{navigator.clipboard.writeText(p[2]).then(()=>{e.target.textContent="Copied";setTimeout(()=>e.target.textContent="Copy code",1200)}).catch(()=>{})};
+      g.append(c)});
+    out.append(g)});
+  if(!shown)out.innerHTML='<div class="none">No programs match your search.</div>';
+  $("#cnt").textContent=shown+" of "+total+" programs shown";
+  $("#pb").style.width=(100*Object.keys(done).length/total)+"%";
+  links.innerHTML="";
+  M.forEach((m,mi)=>{const a=document.createElement("a"),n=m[1].filter((_,pi)=>done[mi+"-"+pi]).length;
+    a.href="#m"+mi;a.innerHTML="<span><b>"+String(mi+1).padStart(2,"0")+"</b></span><i>"+n+"/"+m[1].length+"</i>";
+    a.firstChild.append(m[0]);links.append(a)});
+}
+$("#q").oninput=render;
+$("#all").onclick=()=>{$("#q").value="";render();scrollTo(0,0)};
+document.querySelectorAll(".lb").forEach(b=>b.onclick=()=>{$("#q").value=b.textContent;render()});
+$("#th").onclick=()=>{const d=document.documentElement;d.dataset.theme=d.dataset.theme!=="light"?"light":"dark"};
+render();
+</script>
+</body>
+</html>
